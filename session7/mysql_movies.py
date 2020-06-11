@@ -31,13 +31,21 @@ cursor = mysql_client.cursor()
 #         PRIMARY KEY (id_movie, actor_name)
 #     )
 # ''')
-data = collection.find()
+query = {
+    'title':{'$ne' : None},
+    'writer':{'$ne': None},
+    'year':{'$ne' : None},
+    'actors':{'$ne': None}
+}
+data = collection.find(query)
 # for key in data:
 #     cursor.execute(f'''
 #     INSERT INTO d4e11.movies(id,title,writer,year) 
 #     VALUES('{key['_id']}','{key['title']}','{key['writer']}','{key['year']}')
 # ''')
-# all_actors = collection.distinct('actors')
+all_actors = collection.distinct('actors')
+for act in all_actors:
+    print(act,1)
 # for act in all_actors:
 #     cursor.execute(f'''
 #     INSERT INTO d4e11.actors(name)
@@ -45,11 +53,11 @@ data = collection.find()
 # ''')
 cursor.execute('''SELECT name FROM d4e11.actors''')
 actor_name = cursor.fetchall()
-for key in actor_name:
-    movie_name_found = collection.find({'actors':key['name']})
-    for names in movie_name_found:
-        cursor.execute(f'''
-        INSERT INTO d4e11.movies_actors(id_movie,actor_name)
-        VALUES('{names['_id']}','{key['name']}')
-        ''')
-client.commit()
+# for key in actor_name:
+#     movie_name_found = collection.find({'actors':key['name']})
+#     for names in movie_name_found:
+#         cursor.execute(f'''
+#         INSERT INTO d4e11.movies_actors(id_movie,actor_name)
+#         VALUES('{names['_id']}','{key['name']}')
+#         ''')
+mysql_client.commit()
