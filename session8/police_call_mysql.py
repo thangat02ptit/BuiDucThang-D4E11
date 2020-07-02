@@ -75,7 +75,7 @@ for data in data_police_call:
                 "{data[ 'census_tracts']}",
                 "{data['vrizones']}"
                 )
-            ''')
+        ''')
 mysql_client.commit()
 
         
